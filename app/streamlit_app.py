@@ -2,32 +2,49 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-# Load artifacts
-model = joblib.load(r"C:\code files\credit-card-fraud-detection\models\fraud_model.pkl")
-threshold = joblib.load(r"C:\code files\credit-card-fraud-detection\models\threshold.pkl")
-features = joblib.load(r"C:\code files\credit-card-fraud-detection\models\features.pkl")
+from src.predict import predict_fraud
+
+# Page config
+st.set_page_config(page_title="Fraud Detection", layout="centered")
+
 
 st.title("💳 Credit Card Fraud Detection")
+st.markdown("Detect fraudulent transactions using a trained Machine Learning model")
 
-st.write("Enter transaction details to check if it's fraud.")
+st.divider()
 
-# Create input fields dynamically
+
+features = joblib.load(r"C:\code files\credit-card-fraud-detection\models\features.pkl")
+
+# Input section
+st.subheader("🔢 Enter Transaction Details")
+
 input_data = {}
 
-for feature in features:
-    input_data[feature] = st.number_input(f"{feature}", value=0.0)
 
-# Convert to DataFrame
-input_df = pd.DataFrame([input_data])
+col1, col2 = st.columns(2)
 
-# Prediction button
-if st.button("Predict"):
-    proba = model.predict_proba(input_df)[:,1]
-    prediction = (proba >= threshold).astype(int)
-
-    st.subheader("Result:")
-    
-    if prediction[0] == 1:
-        st.error(f"⚠️ Fraud Detected! Probability: {proba[0]:.4f}")
+for i, feature in enumerate(features):
+    if i % 2 == 0:
+        input_data[feature] = col1.number_input(feature, value=0.0)
     else:
-        st.success(f"✅ Legitimate Transaction. Probability: {proba[0]:.4f}")
+        input_data[feature] = col2.number_input(feature, value=0.0)
+
+st.divider()
+
+# Prediction
+if st.button("🚀 Predict"):
+    prediction, proba = predict_fraud(input_data)
+
+    st.subheader("📊 Prediction Result")
+
+    st.metric("Fraud Probability", f"{proba*100:.2f}%")
+
+    if prediction == 1:
+        st.error("⚠️ Fraudulent Transaction Detected")
+    else:
+        st.success("✅ Legitimate Transaction")
+
+st.divider()
+
+st.caption("Model: Tuned Random Forest | Threshold Optimized")
