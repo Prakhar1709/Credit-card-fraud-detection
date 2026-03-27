@@ -1,3 +1,8 @@
+import sys
+import os
+
+sys.path.append(r"C:\code files\credit-card-fraud-detection")
+
 import streamlit as st
 import joblib
 import pandas as pd
