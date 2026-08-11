@@ -1,5 +1,7 @@
 __pycache__/
+data/
 *.pyc
 .ipynb_checkpoints/
 .env
-data/raw/
+*.csv
+*.pbix
