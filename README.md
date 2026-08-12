@@ -6,6 +6,17 @@ The project combines **Python, SQL, Power BI, and Machine Learning** to move fro
 
 ---
 
+## 📌 Key Results
+
+- **284,807** total transactions analyzed
+- **492** fraudulent transactions identified
+- **0.17%** overall fraud rate
+- **$60.13K** fraudulent transaction amount
+- **0.369%** fraud rate observed in the $500+ transaction segment
+- Identified hourly and transaction-value segments with elevated fraud risk
+
+---
+
 ## 📊 Dashboard
 
 ![Credit Card Fraud Analytics Dashboard](screenshots/dashboard.png)
